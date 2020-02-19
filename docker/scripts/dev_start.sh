@@ -170,7 +170,7 @@ if [ "$INCHINA" == "yes" ]; then
 fi
 
 if [ "$LOCAL_IMAGE" == "yes" ] && [ -z "$VERSION_OPT" ]; then
-    VERSION="local_dev"
+    VERSION="local_dev-3.0.0"
 fi
 
 # Included default maps.

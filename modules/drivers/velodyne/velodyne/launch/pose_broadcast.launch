@@ -1,0 +1,6 @@
+<launch>
+  <arg name="extrinsics_velodyne64" default="$(find velodyne_pointcloud)/params/velodyne64_novatel_extrinsics_example.yaml"/>
+  <node pkg="velodyne_pointcloud" type="extrinsics_broadcaster.py"
+    args="$(arg extrinsics_velodyne64)" name="static_transform_velodyne64" />
+
+</launch>

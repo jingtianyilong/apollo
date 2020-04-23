@@ -639,8 +639,8 @@ void GLFWFusionViewer::render() {
   }
 
   // 5. Top right - Logo
-  glViewport(scene_width_ + image_width_ - logo_width_-5,
-             image_height_ * 2 - 2*logo_height_-5,
+  glViewport(scene_width_ + image_width_ - logo_width_,
+             image_height_ * 2 - 2*logo_height_,
              logo_width_,
              logo_height_);
   glRasterPos2i(0, 0);
@@ -1263,7 +1263,7 @@ bool GLFWFusionViewer::draw_lane_objects_image(cv::Mat* image_mat) {
   }
 
   // draw lane pixels
-  cv::Scalar lane_map_color(0, 255, 255);  // yellow for lane line mark
+  cv::Scalar lane_map_color(160, 32, 240);  // purple for lane line mark
   int x_offset = 0;
   int y_offset = lane_start_y_pos_;
   int x0 = x_offset;

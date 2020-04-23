@@ -189,6 +189,10 @@ bool GLFWFusionViewer::initialize() {
   show_lane_ = true;
   show_trajectory_ = true;
   draw_lane_objects_ = true;
+  logo_ = cv::imread("./logo-big.jpg");
+  cv::flip(logo_, logo_, 0);
+  logo_width_ = logo_.cols;
+  logo_height_ = logo_.rows;
 
   CalibrationConfigManager* calibration_config_manager =
       Singleton<CalibrationConfigManager>::get();
@@ -609,7 +613,6 @@ void GLFWFusionViewer::render() {
     }
     glPopMatrix();
   }
-
   cv::Mat image_mat = frame_content_->get_camera_image().clone();
   // 3. Bottom left, draw 2d camera detection and classification results
   glViewport(0, 0, image_width_, image_height_);
@@ -634,6 +637,18 @@ void GLFWFusionViewer::render() {
       capture_screen_ = false;
     }
   }
+
+  // 5. Top right - Logo
+  glViewport(scene_width_ + image_width_ - logo_width_-5,
+             image_height_ * 2 - 2*logo_height_-5,
+             logo_width_,
+             logo_height_);
+  glRasterPos2i(0, 0);
+  glDrawPixels(logo_width_,
+               logo_height_,
+               GL_RGB,
+               GL_UNSIGNED_BYTE,
+               logo_.ptr());
 
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
@@ -2298,7 +2313,6 @@ void GLFWFusionViewer::draw_8pts_box(const std::vector<Eigen::Vector2d>& points,
   draw_line2d(p6, p2, 2, color_side[0], color_side[1], color_side[2], offset_x,
               offset_y, image_width, image_height);
 }
-
 }  // namespace lowcostvisualizer
 }  // namespace perception
 }  // namespace apollo

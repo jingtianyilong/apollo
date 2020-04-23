@@ -45,7 +45,8 @@ DEFINE_string(perception_obstacle_topic, "/apollo/perception/obstacles_ADD",
               "perception obstacle topic name");
 DEFINE_string(drive_event_topic, "/apollo/drive_event",
               "drive event topic name");
-DEFINE_string(traffic_light_detection_topic, "/apollo/perception/traffic_light_ADD",
+DEFINE_string(traffic_light_detection_topic,
+              "/apollo/perception/traffic_light_ADD",
               "traffic light detection topic name");
 DEFINE_string(perception_lane_mask_segmentation_topic,
               "/apollo/perception/lane_mask_ADD",

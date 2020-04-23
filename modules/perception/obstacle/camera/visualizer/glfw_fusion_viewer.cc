@@ -96,7 +96,6 @@ GLFWFusionViewer::GLFWFusionViewer()
       lane_map_threshold_(0.5),
       frame_count_(0) {
   mode_mat_ = Eigen::Matrix4d::Identity();
-  logo_ = cv::imread("/apollo/data/kv_db/logo.jpg");
 }
 
 GLFWFusionViewer::~GLFWFusionViewer() {
@@ -190,6 +189,10 @@ bool GLFWFusionViewer::initialize() {
   show_lane_ = true;
   show_trajectory_ = true;
   draw_lane_objects_ = true;
+  logo_ = cv::imread("./logo-big.jpg");
+  cv::flip(logo_, logo_, 0);
+  logo_width_ = logo_.cols;
+  logo_height_ = logo_.rows;
 
   CalibrationConfigManager* calibration_config_manager =
       Singleton<CalibrationConfigManager>::get();
@@ -471,7 +474,6 @@ void GLFWFusionViewer::pre_draw() {
 
   GLfloat light_position[] = {1.0, -1.0, 1.0, 0.0};
   glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-  draw_logo(logo_);
 }
 
 void GLFWFusionViewer::draw_fusion_association(FrameContent* content) {
@@ -611,7 +613,6 @@ void GLFWFusionViewer::render() {
     }
     glPopMatrix();
   }
-
   cv::Mat image_mat = frame_content_->get_camera_image().clone();
   // 3. Bottom left, draw 2d camera detection and classification results
   glViewport(0, 0, image_width_, image_height_);
@@ -636,6 +637,18 @@ void GLFWFusionViewer::render() {
       capture_screen_ = false;
     }
   }
+
+  // 5. Top right - Logo
+  glViewport(scene_width_ + image_width_ - logo_width_-5,
+             image_height_ * 2 - 2*logo_height_-5,
+             logo_width_,
+             logo_height_);
+  glRasterPos2i(0, 0);
+  glDrawPixels(logo_width_,
+               logo_height_,
+               GL_RGB,
+               GL_UNSIGNED_BYTE,
+               logo_.ptr());
 
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
@@ -2299,91 +2312,6 @@ void GLFWFusionViewer::draw_8pts_box(const std::vector<Eigen::Vector2d>& points,
               offset_y, image_width, image_height);
   draw_line2d(p6, p2, 2, color_side[0], color_side[1], color_side[2], offset_x,
               offset_y, image_width, image_height);
-}
-
-GLuint GLFWFusionViewer::matToTexture(cv::Mat &mat, GLenum minFilter, GLenum magFilter, GLenum wrapFilter)
-{
-  // Generate a number for our textureID's unique handle
-  GLuint textureID;
-  glGenTextures(1, &textureID);
-  // Bind to our texture handle
-  glBindTexture(GL_TEXTURE_2D, textureID);
-  glPixelStoref(GL_UNPACK_ALIGNMENT, 1);
-  // Set texture interpolation methods for minification and magnification
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minFilter);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, magFilter);
-  // Set texture clamping method
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapFilter);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapFilter);
-  glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
-  GLenum inputColourFormat = GL_RGB;
-  if (mat.channels() == 1){
-     inputColourFormat = GL_LUMINANCE;
-  }
-  // Create the texture
-  glTexImage2D(GL_TEXTURE_2D,
-              0,
-	            GL_RGB,
-	            640,
-	            480,
-	            0,
-	            inputColourFormat,
-	            GL_UNSIGNED_BYTE,
-	            mat.data);
-	return textureID;
-  }
-
-void GLFWFusionViewer::draw_logo(cv::Mat &camFrame)
-{
-  glEnable(GL_TEXTURE_2D);
-  float w = 6.4f;
-  float h = 4.8f;
-  // Convert image and depth data to OpenGL textures
-  GLuint image_tex = matToTexture(camFrame, GL_LINEAR, GL_LINEAR, GL_CLAMP);
-  // Front facing texture
-  // glBegin(GL_POLYGON);
-  // glTexCoord2f(0, 0);
-  // glVertex2f(-1, -1);
-  // glTexCoord2f(1, 0);
-  // glVertex2f(1, -1);
-  // glTexCoord2f(1, 1);
-  // glVertex2f(1, 1);
-  // glTexCoord2f(0, 1);
-  // glVertex2f(-1, 1);
-  // glEnd();
-  // // Free the texture memory
-  // glDeleteTextures(1, &imageTex);
-  // //glDeleteTextures(1, &depthTex);
-  // glDisable(GL_TEXTURE_2D);
-  // glfwSwapBuffers(window_);
-
-
-
-
-
-  /* Draw a quad */
-  glBegin(GL_QUADS);
-  glTexCoord2i(0, 0);
-  glVertex2i(0, 0);
-  glTexCoord2i(0, 1);
-  glVertex2i(0, image_height_);
-  glTexCoord2i(1, 1);
-  glVertex2i(0 + image_width_, image_height_);
-  glTexCoord2i(1, 0);
-  glVertex2i(0 + image_width_, 0);
-  glEnd();
-
-  glDeleteTextures(1, &image_tex);
-  glDisable(GL_TEXTURE_2D);
-
-
-
-
-
-
-
-
-  return;
 }
 }  // namespace lowcostvisualizer
 }  // namespace perception

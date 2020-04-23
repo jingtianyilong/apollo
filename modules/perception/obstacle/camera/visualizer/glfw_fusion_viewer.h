@@ -225,12 +225,13 @@ class GLFWFusionViewer {
   Eigen::Vector3d bg_color_;
   int win_width_;
   int win_height_;
+  int logo_width_;
+  int logo_height_;
   int mouse_prev_x_;
   int mouse_prev_y_;
   Eigen::Matrix4d mode_mat_;
   Eigen::Matrix4d view_mat_;
   cv::Mat logo_;
-
   FrameContent *frame_content_;
   unsigned char *rgba_buffer_;
 
@@ -262,8 +263,6 @@ class GLFWFusionViewer {
   GLuint buffers_cloud[VAO_cloud_num][NumVBOs];
   GLfloat cloudVerts[VBO_cloud_num][3];
 
-  void draw_logo(cv::Mat &camFrame);
-  GLuint matToTexture(cv::Mat &mat, GLenum minFilter, GLenum magFilter, GLenum wrapFilter);
   bool draw_cloud(FrameContent *content);
 
   // circle

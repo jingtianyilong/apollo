@@ -189,7 +189,7 @@ bool GLFWFusionViewer::initialize() {
   show_lane_ = true;
   show_trajectory_ = true;
   draw_lane_objects_ = true;
-  logo_ = cv::imread("./logo-big.jpg");
+  logo_ = cv::imread("/apollo/modules/data/misc/logo.jpg");
   cv::flip(logo_, logo_, 0);
   logo_width_ = logo_.cols;
   logo_height_ = logo_.rows;

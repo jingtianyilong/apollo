@@ -437,6 +437,7 @@ function build_velodyne() {
   cd modules
   catkin_make_isolated --install --source drivers/velodyne \
     --install-space "${ROS_PATH}" -DCMAKE_BUILD_TYPE=Release \
+    -DCATKIN_ENABLE_TESTING=0 \
     --cmake-args --no-warn-unused-cli
   find "${ROS_PATH}" -name "*.pyc" -print0 | xargs -0 rm -rf
   cd -
@@ -461,6 +462,7 @@ function build_lslidar() {
   cd modules
   catkin_make_isolated --install --source drivers/lslidar_apollo \
     --install-space "${ROS_PATH}" -DCMAKE_BUILD_TYPE=Release \
+    -DCATKIN_ENABLE_TESTING=0 \
     --cmake-args --no-warn-unused-cli
   find "${ROS_PATH}" -name "*.pyc" -print0 | xargs -0 rm -rf
   cd -
@@ -484,6 +486,7 @@ function build_rslidar() {
   cd modules
   catkin_make_isolated --install --source drivers/rslidar \
     --install-space "${ROS_PATH}" -DCMAKE_BUILD_TYPE=Release \
+    -DCATKIN_ENABLE_TESTING=0 \
     --cmake-args --no-warn-unused-cli
   find "${ROS_PATH}" -name "*.pyc" -print0 | xargs -0 rm -rf
   cd -
@@ -508,6 +511,7 @@ function build_usbcam() {
   cd modules
   catkin_make_isolated --install --source drivers/usb_cam \
     --install-space "${ROS_PATH}" -DCMAKE_BUILD_TYPE=Release \
+    -DCATKIN_ENABLE_TESTING=0 \
     --cmake-args --no-warn-unused-cli
   find "${ROS_PATH}" -name "*.pyc" -print0 | xargs -0 rm -rf
   cd -

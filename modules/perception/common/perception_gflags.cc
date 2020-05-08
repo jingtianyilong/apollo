@@ -115,7 +115,7 @@ DEFINE_string(onboard_lane_post_processor, "CCLanePostProcessor",
 
 /// visualization
 
-DEFINE_bool(show_radar_objects, false, "");
+DEFINE_bool(show_radar_objects, true, "");
 
 DEFINE_bool(show_camera_objects2d, false, "");
 DEFINE_bool(show_camera_objects, false, "");

@@ -225,11 +225,13 @@ class GLFWFusionViewer {
   Eigen::Vector3d bg_color_;
   int win_width_;
   int win_height_;
+  int logo_width_;
+  int logo_height_;
   int mouse_prev_x_;
   int mouse_prev_y_;
   Eigen::Matrix4d mode_mat_;
   Eigen::Matrix4d view_mat_;
-
+  cv::Mat logo_;
   FrameContent *frame_content_;
   unsigned char *rgba_buffer_;
 

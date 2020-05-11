@@ -134,6 +134,7 @@ int PCDExporter::write_pcd_pose_file(
 
   fprintf(pose_file_handle_, "%d %lf %lf %lf %lf %lf %lf %lf %lf\n", index,
           time, t(0), t(1), t(2), quat.x(), quat.y(), quat.z(), quat.w());
+  fflush(pose_file_handle_);
   return 0;
 }
 

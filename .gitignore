@@ -13,9 +13,16 @@ WORKSPACE
 *.swp
 *.swo
 # generated files
+data/
 generated_data_warehouse.conf
 modules/common/data/ssl_keys
 modules/perception/cuda_util/cmake_build
+docker/build/installers/glew-2.0.0.zip
+docker/build/installers/glew-2.0.0.zip.1
+docker/build/installers/glew-2.0.0.zip.2
+docker/build/installers/glew-2.0.0/
+gltest/
+help_perception.log
 
 # Eclipse IDE files
 .project
@@ -88,3 +95,9 @@ modules/calibration/data/mkz056
 
 # Data bag
 docs/demo_guide/*.bag
+cuda_8.0.61_375.26_linux.run
+cuda-repo-ubuntu1404-8-0-local-ga2_8.0.61-1_amd64.deb
+libcudnn7_7.6.5.32-1+cuda10.2_amd64.deb
+NVIDIA-Linux-x86_64-440.59.run
+libcudnn7-dev_7.6.5.32-1+cuda10.2_amd64.deb
+rebuild.sh

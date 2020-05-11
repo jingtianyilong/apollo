@@ -23,4 +23,4 @@ source "${DIR}/apollo_base.sh"
 # run function from apollo_base.sh
 # run command_name module_name
 run perception "$@" --dag_config_path=/apollo/modules/perception/conf/dag_camera_obstacle_vis.config \
---alsologtostderr=1 --v=4
+--alsologtostderr=1 --v=4 --show_radar_objects=true --enable_hdmap_input=false

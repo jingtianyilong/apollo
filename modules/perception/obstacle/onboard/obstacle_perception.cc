@@ -150,12 +150,13 @@ bool ObstaclePerception::Process(
     std::vector<PolygonDType> map_polygons;
     if (!radar_detector_->Detect(radar_frame->raw_obstacles_, map_polygons,
                                  options, &objects)) {
+      AWARN << "Radar detection finished";
       AERROR << "Radar perception error!, " << std::fixed
              << std::setprecision(12) << radar_frame->timestamp_;
       return false;
     }
     sensor_objects->objects = objects;
-    AINFO << "radar objects size: " << objects.size();
+    AWARN << "radar objects size: " << objects.size();
     PERF_BLOCK_END("radar_detection");
     /// set frame content
     if (FLAGS_enable_visualization && obstacle_show_type_ == SHOW_RADAR) {

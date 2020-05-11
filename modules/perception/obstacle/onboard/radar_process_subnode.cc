@@ -90,6 +90,8 @@ bool RadarProcessSubnode::InitInternal() {
   }
   radar_extrinsic_ = radar_extrinsic.matrix();
   AINFO << "get radar extrinsic succ. pose: \n" << radar_extrinsic_;
+  AWARN << "get radar extrinsic succ. pose: \n" << radar_extrinsic_;
+
 
   std::string short_camera_extrinsic_path = FLAGS_short_camera_extrinsic_file;
   AINFO << "short camera extrinsic path: " << short_camera_extrinsic_path;
@@ -118,7 +120,7 @@ void RadarProcessSubnode::OnRadar(const ContiRadar &radar_obs) {
          << GLOG_TIMESTAMP(cur_time) << "]:cur_latency[" << start_latency
          << "]";
   // 0. correct radar timestamp
-  timestamp -= 0.07;
+  timestamp -= 0.0;
   auto *header = radar_obs_proto.mutable_header();
   header->set_timestamp_sec(timestamp);
   header->set_radar_timestamp(timestamp * 1e9);
@@ -132,13 +134,17 @@ void RadarProcessSubnode::OnRadar(const ContiRadar &radar_obs) {
   }
   ADEBUG << "recv radar msg: [timestamp: " << GLOG_TIMESTAMP(timestamp)
          << " num_raw_obstacles: " << radar_obs_proto.contiobs_size() << "]";
+  AWARN << "recv radar msg: [timestamp: " << GLOG_TIMESTAMP(timestamp)
+         << " num_raw_obstacles: " << radar_obs_proto.contiobs_size() << "]";
 
   // 1. get radar pose
   std::shared_ptr<Matrix4d> velodyne2world_pose = std::make_shared<Matrix4d>();
 
   ADEBUG << "use navigation mode " << FLAGS_use_navigation_mode;
+  AWARN << "use navigation mode " << FLAGS_use_navigation_mode;
 
   if (!FLAGS_use_navigation_mode &&
+  
       !GetVelodyneTrans(timestamp, velodyne2world_pose.get())) {
     AERROR << "Failed to get trans at timestamp: " << GLOG_TIMESTAMP(timestamp);
     error_code_ = common::PERCEPTION_ERROR_TF;
@@ -151,6 +157,8 @@ void RadarProcessSubnode::OnRadar(const ContiRadar &radar_obs) {
     *radar2world_pose =
         *velodyne2world_pose * short_camera_extrinsic_ * radar_extrinsic_;
     ADEBUG << "get radar trans pose succ. pose: \n" << *radar2world_pose;
+    AWARN << "get radar trans pose succ. pose: \n" << *radar2world_pose;
+
 
   } else {
     CalibrationConfigManager *config_manager =
@@ -204,6 +212,7 @@ void RadarProcessSubnode::OnRadar(const ContiRadar &radar_obs) {
   radar_objects->sensor2world_pose = *radar2world_pose;
   bool result = radar_detector_->Detect(radar_obs_proto, map_polygons, options,
                                         &radar_objects->objects);
+  AWARN << "IN SUBNODE: radar_objects: " << (radar_objects->objects).size();
   if (!result) {
     radar_objects->error_code = common::PERCEPTION_ERROR_PROCESS;
     PublishDataAndEvent(timestamp, radar_objects);
@@ -223,6 +232,8 @@ void RadarProcessSubnode::OnRadar(const ContiRadar &radar_obs) {
          << "]:cur_time[" << GLOG_TIMESTAMP(end_timestamp) << "]:cur_latency["
          << end_latency << "]";
   ADEBUG << "radar process succ, there are " << (radar_objects->objects).size()
+         << " objects.";
+  AWARN << "radar process succ, there are " << (radar_objects->objects).size()
          << " objects.";
   return;
 }
@@ -296,7 +307,7 @@ bool RadarProcessSubnode::InitFrameDependence() {
     return false;
   }
   AINFO << "Init shared data successfully, data: " << radar_data_->name();
-
+  AWARN << "Init shared data successfully, data: " << radar_data_->name();
   /// init hdmap
   if (FLAGS_enable_hdmap_input) {
     hdmap_input_ = HDMapInput::instance();

@@ -67,7 +67,7 @@ GLFWFusionViewer::GLFWFusionViewer()
     : init_(false),
       window_(nullptr),
       //  pers_camera_(nullptr),
-      bg_color_(0.0, 0.0, 0.0),
+      bg_color_(0.2, 0.2, 0.2),
       win_width_(2560),
       win_height_(1440),
       mouse_prev_x_(0),
@@ -112,19 +112,19 @@ GLFWFusionViewer::~GLFWFusionViewer() {
 void GLFWFusionViewer::get_class_color(int cls, float rgb[3]) {
   switch (cls) {
     case 0:
-      rgb[0] = 0.5;
-      rgb[1] = 0;
-      rgb[2] = 1;  // pink
+      rgb[0] = 1;
+      rgb[1] = float(200/255);
+      rgb[2] = float(185/255);  // pink
       break;
     case 1:
-      rgb[0] = 0;
-      rgb[1] = 1;
-      rgb[2] = 1;  // cryan
+      rgb[0] = float(118/255);
+      rgb[1] = float(130/255);
+      rgb[2] = float(184/255);  // cryan
       break;
     case 2:
       rgb[0] = 1;
-      rgb[1] = 1;
-      rgb[2] = 0;  // yellow
+      rgb[1] = float(144/255);
+      rgb[2] = float(121/255);  // yellow
       break;
     case 3:
       rgb[0] = 1;
@@ -278,6 +278,7 @@ bool GLFWFusionViewer::window_init() {
   win_width_ = scene_width_ + image_width_;
   win_height_ =
       (image_height_ * 2 > win_height_) ? image_height_ * 2 : win_height_;
+  // glfwWindowHint(GLFW_CONTEXT_CREATION_API, GLFW_EGL_CONTEXT_API);
   window_ = glfwCreateWindow(win_width_, win_height_, "gl_camera_visualizer",
                              nullptr, nullptr);
   if (window_ == nullptr) {
@@ -1045,14 +1046,15 @@ void GLFWFusionViewer::draw_camera_frame(FrameContent* content,
   }
   if (show_radar_pc_) {
     std::vector<std::shared_ptr<Object>> objects = content->get_radar_objects();
+    AWARN << "content has radar obj: " << content->has_radar_data();
     draw_objects2d(objects, v2c, "radar", offset_x, offset_y, image_width,
                    image_height);
   }
 }
 
 void GLFWFusionViewer::draw_lane_objects_ground() {
-  glPointSize(1);
-  glLineWidth(1);
+  glPointSize(2);
+  glLineWidth(2);
 
   if (show_trajectory_) {
     //    if (lane_history_buffer_.size() > lane_history_buffer_size_) {
@@ -1798,8 +1800,9 @@ void GLFWFusionViewer::draw_objects(
   }
   // draw main car
   {
-    glColor3f((GLfloat)255.0, (GLfloat)0.0, (GLfloat)0.0);
+    glColor3f((GLfloat)140.0, (GLfloat)67.0, (GLfloat)4.0);
     glBegin(GL_LINE_STRIP);
+    glLineWidth(2);
     for (size_t i = 0; i < 5; ++i) {
       size_t index = i % 4;
       glVertex3f(main_car_[index][0], main_car_[index][1], main_car_[index][2]);
@@ -2081,6 +2084,7 @@ void GLFWFusionViewer::draw_3d_classifications(FrameContent* content,
   }
 
   if (show_radar_pc_) {
+    AWARN << "3d classification has radar data? " << content->has_radar_data();
     Eigen::Vector3f radar_color(1, 1, 1);
     bool draw_cube = true;
     bool draw_velocity = true;
@@ -2201,6 +2205,7 @@ void GLFWFusionViewer::draw_objects2d(
     int image_height) {
   if (name == "radar") {
     // LOG(INFO)<<objects.size();
+    AWARN << "object has size: " << objects.size();
     for (auto obj : objects) {
       const auto& center = obj->center;
       Eigen::Vector2d center2d;
@@ -2217,7 +2222,12 @@ void GLFWFusionViewer::draw_objects2d(
       float y1 = y - radius;
       float y2 = y + radius;
 
+      AWARN << "Got center \n"
+            << "P1: (" << x1 << ", " << y1 << ")\n"
+            << "P2: (" << x2 << ", " << y2 << ")" << std::endl;
       if (obj->b_cipv) {
+        AWARN << "radar draw_objects2d This is CIPV, obj->track_id: "
+               << obj->track_id;
         ADEBUG << "radar draw_objects2d This is CIPV, obj->track_id: "
                << obj->track_id;
         glColor3ub(255, 0, 0);
@@ -2225,7 +2235,7 @@ void GLFWFusionViewer::draw_objects2d(
         glColor3ub(0, 0, 0);
       }
 
-      glLineWidth(4);
+      glLineWidth(10);
       glBegin(GL_LINES);
       glVertex2i(x1, y1);
       glVertex2i(x1, y2);

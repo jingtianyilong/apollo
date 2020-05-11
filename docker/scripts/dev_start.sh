@@ -262,7 +262,9 @@ function main(){
         ${MAP_VOLUME_CONF} \
         --volumes-from ${LOCALIZATION_VOLUME} \
         --volumes-from ${YOLO3D_VOLUME} \
-        -e DISPLAY=$display \
+        -v /usr/src:/usr/src \
+	-v /lib/modules:/lib/modules \
+	-e DISPLAY=$display \
         -e DOCKER_USER=$USER \
         -e USER=$USER \
         -e DOCKER_USER_ID=$USER_ID \

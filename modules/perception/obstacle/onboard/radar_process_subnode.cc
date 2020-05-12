@@ -120,7 +120,7 @@ void RadarProcessSubnode::OnRadar(const ContiRadar &radar_obs) {
          << GLOG_TIMESTAMP(cur_time) << "]:cur_latency[" << start_latency
          << "]";
   // 0. correct radar timestamp
-  timestamp -= 0.0;
+  timestamp -= 0.07;
   auto *header = radar_obs_proto.mutable_header();
   header->set_timestamp_sec(timestamp);
   header->set_radar_timestamp(timestamp * 1e9);
@@ -134,14 +134,14 @@ void RadarProcessSubnode::OnRadar(const ContiRadar &radar_obs) {
   }
   ADEBUG << "recv radar msg: [timestamp: " << GLOG_TIMESTAMP(timestamp)
          << " num_raw_obstacles: " << radar_obs_proto.contiobs_size() << "]";
-  AWARN << "recv radar msg: [timestamp: " << GLOG_TIMESTAMP(timestamp)
-         << " num_raw_obstacles: " << radar_obs_proto.contiobs_size() << "]";
+  // AWARN << "recv radar msg: [timestamp: " << GLOG_TIMESTAMP(timestamp)
+  //        << " num_raw_obstacles: " << radar_obs_proto.contiobs_size() << "]";
 
   // 1. get radar pose
   std::shared_ptr<Matrix4d> velodyne2world_pose = std::make_shared<Matrix4d>();
 
   ADEBUG << "use navigation mode " << FLAGS_use_navigation_mode;
-  AWARN << "use navigation mode " << FLAGS_use_navigation_mode;
+  // AWARN << "use navigation mode " << FLAGS_use_navigation_mode;
 
   if (!FLAGS_use_navigation_mode &&
   
@@ -157,15 +157,17 @@ void RadarProcessSubnode::OnRadar(const ContiRadar &radar_obs) {
     *radar2world_pose =
         *velodyne2world_pose * short_camera_extrinsic_ * radar_extrinsic_;
     ADEBUG << "get radar trans pose succ. pose: \n" << *radar2world_pose;
-    AWARN << "get radar trans pose succ. pose: \n" << *radar2world_pose;
+    // AWARN << "get radar trans pose succ. pose: \n" << *radar2world_pose;
 
 
   } else {
     CalibrationConfigManager *config_manager =
         Singleton<CalibrationConfigManager>::get();
     CameraCalibrationPtr calibrator = config_manager->get_camera_calibration();
-    // Eigen::Matrix4d camera_to_car = calibrator->get_camera_extrinsics();
-    *radar2car_pose = radar_extrinsic_;
+    Eigen::Matrix4d camera_to_car = calibrator->get_camera_extrinsics();
+    AWARN << "radar2cam " << radar_extrinsic_;
+    AWARN << "radar2world " << radar2world_pose;
+    *radar2car_pose = camera_to_car * radar_extrinsic_;
     ADEBUG << "get radar trans pose succ. pose: \n" << *radar2car_pose;
   }
 

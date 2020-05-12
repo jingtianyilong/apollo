@@ -13,7 +13,7 @@ WORKSPACE
 *.swp
 *.swo
 # generated files
-data/
+data/bag.baofeng
 generated_data_warehouse.conf
 modules/common/data/ssl_keys
 modules/perception/cuda_util/cmake_build
@@ -68,6 +68,8 @@ data/cov
 data/kv_db
 data/pcd
 data/nfs
+data/radar
+data/pose
 data/map_visual
 modules/data/conf/task_info_template.pb.txt
 modules/tools/ota/update.ini

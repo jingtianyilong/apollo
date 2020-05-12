@@ -134,7 +134,6 @@ bool ModestRadarDetector::Detect(
            << RadarFrameSupplement::state_vars.trans_matrix << std::endl;
     RadarFrameSupplement::state_vars.initialized_ = true;
   }
-  AWARN << "Radar detection finished";
 
   return true;
 }

@@ -189,7 +189,7 @@ bool GLFWFusionViewer::initialize() {
   show_lane_ = true;
   show_trajectory_ = true;
   draw_lane_objects_ = true;
-  logo_ = cv::imread("/apollo/modules/data/misc/logo.jpg");
+  logo_ = cv::imread("/apollo/modules/data/misc/mb-logo-s.png", cv::IMREAD_UNCHANGED);
   cv::flip(logo_, logo_, 0);
   logo_width_ = logo_.cols;
   logo_height_ = logo_.rows;
@@ -488,7 +488,7 @@ void GLFWFusionViewer::draw_fusion_association(FrameContent* content) {
     cam_track_id_2_ind[obj->track_id] = i;
   }
   glColor3f(1, 0, 0);
-  glLineWidth(2);
+  glLineWidth(4);
   glBegin(GL_LINES);
   for (size_t i = 0; i < fusion_objects.size(); i++) {
     std::shared_ptr<Object> obj = fusion_objects[i];
@@ -640,14 +640,16 @@ void GLFWFusionViewer::render() {
   }
 
   // 5. Top right - Logo
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   glViewport(scene_width_ + image_width_ - logo_width_,
-             image_height_ * 2 - 2*logo_height_,
+             image_height_ * 2 - 2 * logo_height_,
              logo_width_,
              logo_height_);
   glRasterPos2i(0, 0);
   glDrawPixels(logo_width_,
                logo_height_,
-               GL_RGB,
+               GL_RGBA,
                GL_UNSIGNED_BYTE,
                logo_.ptr());
 
@@ -1817,7 +1819,7 @@ void GLFWFusionViewer::draw_objects(
   {
     glColor3f((GLfloat)140.0, (GLfloat)67.0, (GLfloat)4.0);
     glBegin(GL_LINE_STRIP);
-    glLineWidth(2);
+    glLineWidth(10);
     for (size_t i = 0; i < 5; ++i) {
       size_t index = i % 4;
       glVertex3f(main_car_[index][0], main_car_[index][1], main_car_[index][2]);
@@ -1910,9 +1912,11 @@ void GLFWFusionViewer::draw_objects(
       }
       glEnd();
       glFlush();
-
       glRasterPos2i(tc[0], tc[1]);
-      raster_text_->print_string(std::to_string(objects[i]->track_id));
+      // raster_text_->print_string(std::to_string(objects[i]->track_id));
+      // print class type instead of tracker id
+      raster_text_->print_string(std::to_string(int(objects[i]->type)));
+
       int offset = 2;
 
       if (show_verbose_) {
@@ -2099,7 +2103,6 @@ void GLFWFusionViewer::draw_3d_classifications(FrameContent* content,
   }
 
   if (show_radar_pc_) {
-    AWARN << "3d classification has radar data? " << content->has_radar_data();
     Eigen::Vector3f radar_color(1, 1, 1);
     bool draw_cube = true;
     bool draw_velocity = true;
@@ -2229,6 +2232,7 @@ void GLFWFusionViewer::draw_objects2d(
           (center2d[0] < 0) || (center2d[1] < 0)) {
         continue;
       }
+      AWARN << "OFF-SET: " << offset_x << ", " << offset_y;
       float x = offset_x + 1.0 * center2d[0] * image_width_ / image_width;
       float y = offset_y + 1.0 * center2d[1] * image_height_ / image_height;
       float radius = 5.0 * image_height_ / image_height;
@@ -2245,9 +2249,9 @@ void GLFWFusionViewer::draw_objects2d(
                << obj->track_id;
         ADEBUG << "radar draw_objects2d This is CIPV, obj->track_id: "
                << obj->track_id;
-        glColor3ub(255, 0, 0);
+        glColor3ub(255, 255, 255);
       } else {
-        glColor3ub(0, 0, 0);
+        glColor3ub(255, 255, 255);
       }
 
       glLineWidth(10);
@@ -2287,7 +2291,7 @@ void GLFWFusionViewer::draw_8pts_box(const std::vector<Eigen::Vector2d>& points,
   Eigen::Vector2d p7 = points[6];
   Eigen::Vector2d p8 = points[7];
 
-  int color_bottom[3] = {128, 32, 32};  // bottom edges' color
+  int color_bottom[3] = {255, 255, 255};  // bottom edges' color
   int color_top[3] = {0, 255, 155};     // top edges' color
   int color_side[3] = {0, 255, 55};     // side edges' color
 

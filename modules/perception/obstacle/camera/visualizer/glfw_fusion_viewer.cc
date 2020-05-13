@@ -2101,7 +2101,6 @@ void GLFWFusionViewer::draw_3d_classifications(FrameContent* content,
     bool draw_velocity = true;
     std::vector<std::shared_ptr<Object>> objects =
         content->get_radar_objects(&ts);
-    AWARN << "-----------------DRAWING RADAR OBJECTS NOW" << objects.size();
     draw_objects(ts, objects, c2v, draw_cube, draw_velocity, radar_color, false,
                  false);
   }
@@ -2217,12 +2216,10 @@ void GLFWFusionViewer::draw_objects2d(
     int image_height) {
   if (name == "radar") {
     // LOG(INFO)<<objects.size();
-    AWARN << "-----------------DRAWING RADAR OBJECTS NOW. objects.size(): " << objects.size();
     for (auto obj : objects) {
       const auto& center = obj->center;
       Eigen::Vector2d center2d;
       get_project_point(v2c, center, &center2d);
-      AWARN << "++++Radar Objects in World" << center << " ---in Img: " << center2d;
       if ((center2d[0] > image_width) || (center2d[1] > image_height) ||
           (center2d[0] < 0) || (center2d[1] < 0)) {
         continue;
@@ -2242,7 +2239,6 @@ void GLFWFusionViewer::draw_objects2d(
       } else {
         glColor3ub(0, 0, 0);
       }
-      //AWARN << "-------------------------Drawing Radar Objects: x1: " << x1 << "; y1: " << y1 << "; x2: " << x2 << "; y2: " << y2;
       glLineWidth(40);
       glBegin(GL_LINES);
       glVertex2i(x1, y1);

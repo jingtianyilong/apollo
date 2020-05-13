@@ -57,6 +57,7 @@ bool ObjectBuilder::Build(const ContiRadar &raw_obstacles,
     location_r << raw_obstacles.contiobs(i).longitude_dist(),
         raw_obstacles.contiobs(i).lateral_dist(), 0.0, 1.0;
     location_w = radar_pose * location_r;
+    location_w(2,0) = 0.0;
     Eigen::Vector3d point;
     point = location_w.topLeftCorner(3, 1);
     object_ptr->center = point;

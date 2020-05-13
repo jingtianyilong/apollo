@@ -2239,8 +2239,7 @@ void GLFWFusionViewer::draw_objects2d(
       } else {
         glColor3ub(0, 0, 0);
       }
-
-      glLineWidth(4);
+      glLineWidth(40);
       glBegin(GL_LINES);
       glVertex2i(x1, y1);
       glVertex2i(x1, y2);
@@ -2255,7 +2254,7 @@ void GLFWFusionViewer::draw_objects2d(
       glVertex2i(x1, y1);
       glEnd();
     }
-    glLineWidth(1);
+    glLineWidth(4);
 
     return;
   }

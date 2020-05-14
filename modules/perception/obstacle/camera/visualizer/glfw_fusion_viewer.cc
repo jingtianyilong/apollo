@@ -2269,7 +2269,7 @@ void GLFWFusionViewer::draw_objects2d(
       glVertex2i(x1, y1);
       glEnd();
     }
-    glLineWidth(1);
+    glLineWidth(4);
 
     return;
   }

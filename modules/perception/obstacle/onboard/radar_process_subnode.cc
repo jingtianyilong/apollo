@@ -152,7 +152,6 @@ void RadarProcessSubnode::OnRadar(const ContiRadar &radar_obs) {
   }
   std::shared_ptr<Matrix4d> radar2world_pose = std::make_shared<Matrix4d>();
   std::shared_ptr<Matrix4d> radar2car_pose = std::make_shared<Matrix4d>();
-
   if (!FLAGS_use_navigation_mode) {
     *radar2world_pose =
         *velodyne2world_pose * short_camera_extrinsic_ * radar_extrinsic_;
@@ -167,7 +166,7 @@ void RadarProcessSubnode::OnRadar(const ContiRadar &radar_obs) {
     Eigen::Matrix4d camera_to_car = calibrator->get_camera_extrinsics();
     // AWARN << "radar2cam " << radar_extrinsic_;
     // AWARN << "radar2world " << radar2world_pose;
-    *radar2car_pose = camera_to_car * radar_extrinsic_;
+    *radar2car_pose = radar_extrinsic_ * camera_to_car;
     ADEBUG << "get radar trans pose succ. pose: \n" << *radar2car_pose;
   }
 

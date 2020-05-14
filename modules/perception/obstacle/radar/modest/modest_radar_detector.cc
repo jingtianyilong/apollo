@@ -76,7 +76,6 @@ bool ModestRadarDetector::Detect(
     const std::vector<PolygonDType> &map_polygons,
     const RadarDetectorOptions &options,
     std::vector<std::shared_ptr<Object>> *objects) {
-  AWARN << "THis is a ModestRadarDetector";
   if (objects == nullptr) {
     AERROR << "Objects is nullptr";
     return false;
@@ -111,11 +110,8 @@ bool ModestRadarDetector::Detect(
   RoiFilter(map_polygons, &filter_objects);
   // treatment
   radar_tracker_->Process(radar_objects);
-  AWARN << "After process, object size: " << radar_objects.objects.size();
-
   ADEBUG << "After process, object size: " << radar_objects.objects.size();
   CollectRadarResult(objects);
-  AWARN << "radar object size: " << objects->size();
   ADEBUG << "radar object size: " << objects->size();
 
   if (!RadarFrameSupplement::state_vars.initialized_) {

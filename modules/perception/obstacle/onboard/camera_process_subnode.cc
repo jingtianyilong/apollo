@@ -121,7 +121,6 @@ void CameraProcessSubnode::ImgCallback(const sensor_msgs::Image &message) {
   cv::resize(img, img, cv::Size(1920, 1080), 0, 0);
   std::vector<std::shared_ptr<VisualObject>> objects;
   cv::Mat mask;
-
   PERF_BLOCK_END("CameraProcessSubnode_Image_Preprocess");
   detector_->Multitask(img, CameraDetectorOptions(), &objects, &mask);
   mask = mask*2;

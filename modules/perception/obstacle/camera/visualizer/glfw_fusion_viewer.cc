@@ -189,7 +189,7 @@ bool GLFWFusionViewer::initialize() {
   show_lane_ = true;
   show_trajectory_ = true;
   draw_lane_objects_ = true;
-  logo_ = cv::imread("/apollo/modules/data/misc/mb-logo-s.png", cv::IMREAD_UNCHANGED);
+  logo_ = cv::imread("/apollo/modules/data/misc/mb-logo.png", cv::IMREAD_UNCHANGED);
   cv::flip(logo_, logo_, 0);
   logo_width_ = logo_.cols;
   logo_height_ = logo_.rows;
@@ -642,8 +642,8 @@ void GLFWFusionViewer::render() {
   // 5. Top right - Logo
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  glViewport(scene_width_ + image_width_ - logo_width_,
-             image_height_ * 2 - 2 * logo_height_,
+  glViewport(scene_width_ + 50,
+             -55,
              logo_width_,
              logo_height_);
   glRasterPos2i(0, 0);
@@ -1063,7 +1063,7 @@ void GLFWFusionViewer::draw_camera_frame(FrameContent* content,
   }
   if (show_radar_pc_) {
     std::vector<std::shared_ptr<Object>> objects = content->get_radar_objects();
-    AWARN << "content has radar obj: " << content->has_radar_data();
+    // AWARN << "content has radar obj: " << content->has_radar_data();
     draw_objects2d(objects, v2c, "radar", offset_x, offset_y, image_width,
                    image_height);
   }
@@ -2223,7 +2223,7 @@ void GLFWFusionViewer::draw_objects2d(
     int image_height) {
   if (name == "radar") {
     // LOG(INFO)<<objects.size();
-    AWARN << "object has size: " << objects.size();
+    // AWARN << "object has size: " << objects.size();
     for (auto obj : objects) {
       const auto& center = obj->center;
       Eigen::Vector2d center2d;
@@ -2232,7 +2232,7 @@ void GLFWFusionViewer::draw_objects2d(
           (center2d[0] < 0) || (center2d[1] < 0)) {
         continue;
       }
-      AWARN << "OFF-SET: " << offset_x << ", " << offset_y;
+      // AWARN << "OFF-SET: " << offset_x << ", " << offset_y;
       float x = offset_x + 1.0 * center2d[0] * image_width_ / image_width;
       float y = offset_y + 1.0 * center2d[1] * image_height_ / image_height;
       float radius = 5.0 * image_height_ / image_height;
@@ -2241,9 +2241,9 @@ void GLFWFusionViewer::draw_objects2d(
       float y1 = y - radius;
       float y2 = y + radius;
 
-      AWARN << "Got center \n"
-            << "P1: (" << x1 << ", " << y1 << ")\n"
-            << "P2: (" << x2 << ", " << y2 << ")" << std::endl;
+      // AWARN << "Got center \n"
+      //       << "P1: (" << x1 << ", " << y1 << ")\n"
+      //       << "P2: (" << x2 << ", " << y2 << ")" << std::endl;
       if (obj->b_cipv) {
         AWARN << "radar draw_objects2d This is CIPV, obj->track_id: "
                << obj->track_id;

@@ -115,6 +115,7 @@ bool GetRadarTrans(const double query_time, Eigen::Matrix4d* trans) {
   try {
     transform_stamped = tf2_buffer.lookupTransform(
         FLAGS_radar_tf2_frame_id, FLAGS_radar_tf2_child_frame_id, query_stamp);
+    AWARN << "Try transform radar to frame";
   } catch (tf2::TransformException& ex) {
     AERROR << "Exception: " << ex.what();
     return false;

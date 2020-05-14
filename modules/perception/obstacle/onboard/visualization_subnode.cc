@@ -236,7 +236,7 @@ void VisualizationSubnode::SetRadarContent(const std::string& data_key,
       AERROR << "Failed to get shared data: " << radar_object_data_->name();
       return;
     }
-    AWARN << "step in set_radar_content";
+    // AWARN << "step in set_radar_content";
     content->set_radar_content(timestamp, objs->objects);
   }
 }

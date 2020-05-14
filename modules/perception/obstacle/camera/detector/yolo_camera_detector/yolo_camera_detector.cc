@@ -38,7 +38,7 @@ using std::vector;
 
 bool YoloCameraDetector::Init(const CameraDetectorInitOptions &options) {
   // load yolo camera detector config file to proto
-  CHECK(GetProtoFromFile(FLAGS_yolo_camera_detector_config, &config_));
+  CHECK(GetProtoFromFile(FLAGS_yolo_camera_detector_config, &config_));                                             
 
   const string &yolo_root = config_.yolo_root();
   const string yolo_config = apollo::common::util::GetAbsolutePath(
@@ -344,8 +344,9 @@ bool YoloCameraDetector::Multitask(
     AERROR << "'seg_blob' is a null pointer.";
     return false;
   }
-
+  AWARN << "before: " << *mask;
   *mask = cv::Mat(lane_output_height_, lane_output_width_, CV_32FC1);
+  AWARN << "after: " << *mask;
   memcpy(mask->data,
          seg_blob->cpu_data() + lane_output_width_ * lane_output_height_,
          lane_output_width_ * lane_output_height_ * sizeof(float));

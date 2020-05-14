@@ -165,8 +165,8 @@ void RadarProcessSubnode::OnRadar(const ContiRadar &radar_obs) {
         Singleton<CalibrationConfigManager>::get();
     CameraCalibrationPtr calibrator = config_manager->get_camera_calibration();
     Eigen::Matrix4d camera_to_car = calibrator->get_camera_extrinsics();
-    AWARN << "radar2cam " << radar_extrinsic_;
-    AWARN << "radar2world " << radar2world_pose;
+    // AWARN << "radar2cam " << radar_extrinsic_;
+    // AWARN << "radar2world " << radar2world_pose;
     *radar2car_pose = camera_to_car * radar_extrinsic_;
     ADEBUG << "get radar trans pose succ. pose: \n" << *radar2car_pose;
   }
@@ -214,7 +214,7 @@ void RadarProcessSubnode::OnRadar(const ContiRadar &radar_obs) {
   radar_objects->sensor2world_pose = *radar2world_pose;
   bool result = radar_detector_->Detect(radar_obs_proto, map_polygons, options,
                                         &radar_objects->objects);
-  AWARN << "IN SUBNODE: radar_objects: " << (radar_objects->objects).size();
+  // AWARN << "IN SUBNODE: radar_objects: " << (radar_objects->objects).size();
   if (!result) {
     radar_objects->error_code = common::PERCEPTION_ERROR_PROCESS;
     PublishDataAndEvent(timestamp, radar_objects);
@@ -234,8 +234,6 @@ void RadarProcessSubnode::OnRadar(const ContiRadar &radar_obs) {
          << "]:cur_time[" << GLOG_TIMESTAMP(end_timestamp) << "]:cur_latency["
          << end_latency << "]";
   ADEBUG << "radar process succ, there are " << (radar_objects->objects).size()
-         << " objects.";
-  AWARN << "radar process succ, there are " << (radar_objects->objects).size()
          << " objects.";
   return;
 }

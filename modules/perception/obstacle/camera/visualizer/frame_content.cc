@@ -97,7 +97,7 @@ void FrameContent::set_radar_content(
     double timestamp, const std::vector<std::shared_ptr<Object>>& objects) {
   RadarContent content;
   content.timestamp_ = timestamp;
-  AWARN << "SET RADAR CONTENT got " << objects.size() << "objetcts";
+  // AWARN << "SET RADAR CONTENT got " << objects.size() << "objetcts";
   content.radar_objects_.resize(objects.size());
   for (size_t i = 0; i < objects.size(); ++i) {
     content.radar_objects_[i].reset(new Object);
@@ -205,7 +205,7 @@ void FrameContent::update_timestamp(double ref) {
 
   double best_delta = FLT_MAX;
   double best_ts = -1;
-  AWARN << "Radar_caches_ in timestamp update: " << radar_caches_.size();
+  // AWARN << "Radar_caches_ in timestamp update: " << radar_caches_.size();
   for (std::map<int64_t, RadarContent>::iterator it = radar_caches_.begin();
        it != radar_caches_.end(); ++it) {
     double it_ts = MapKeyToDouble(it->first);
@@ -220,7 +220,7 @@ void FrameContent::update_timestamp(double ref) {
   common::util::erase_map_where(
       radar_caches_,
       [this, best_ts](std::map<int64_t, RadarContent>::value_type& p) {
-        AWARN << "call erase radar_caches_";
+        // AWARN << "call erase radar_caches_";
         return this->MapKeyToDouble(p.first) < best_ts;
       });
 
@@ -359,7 +359,7 @@ Eigen::Matrix4d FrameContent::get_opengl_camera_system_pose() {
 
 std::vector<std::shared_ptr<Object>> FrameContent::get_radar_objects(
     double* ts) {
-  AWARN << "radar_caches_ have size: " << radar_caches_.size();
+  // AWARN << "radar_caches_ have size: " << radar_caches_.size();
   auto it = radar_caches_.find(DoubleToMapKey(current_radar_timestamp_));
   if (it == radar_caches_.end()) {
     return std::vector<std::shared_ptr<Object>>();

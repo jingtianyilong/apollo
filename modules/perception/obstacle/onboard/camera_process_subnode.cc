@@ -123,13 +123,14 @@ void CameraProcessSubnode::ImgCallback(const sensor_msgs::Image &message) {
   cv::Mat mask;
   PERF_BLOCK_END("CameraProcessSubnode_Image_Preprocess");
   detector_->Multitask(img, CameraDetectorOptions(), &objects, &mask);
+  AWARN << "MASK SIZE: " << mask.size();
   mask = mask*2;
   if (FLAGS_use_whole_lane_line) {
     cv::Mat mask1;
     detector_->Lanetask(img, &mask1);
     mask += mask1;
   }
-
+  AWARN << "MASK SIZE: " << mask.size();
   PERF_BLOCK_END("CameraProcessSubnode_detector_");
 
   converter_->Convert(&objects);

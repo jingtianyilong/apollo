@@ -5,6 +5,9 @@ bazel-bin
 bazel-genfiles
 bazel-out
 bazel-testlogs
+caffe-yolov3
+darknet2caffe
+yolo3d.pt
 /Debug/
 *.pyc
 *genrule.log

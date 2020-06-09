@@ -1,0 +1,3 @@
+name: "YoloV4CameraDetector"
+version: "1.0.0"
+yolo_root: "/apollo/modules/perception/model/yolov4_camera_detector"

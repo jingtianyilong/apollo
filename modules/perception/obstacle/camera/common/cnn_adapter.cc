@@ -33,6 +33,10 @@ bool CNNCaffe::init(const std::vector<std::string> &input_names,
   ADEBUG << "proto_file: " << proto_file;
   ADEBUG << "weight_file: " << weight_file;
   ADEBUG << "model_root: " << model_root;
+  AWARN << "init CNNCaffe";
+  AWARN << "proto_file: " << proto_file;
+  AWARN << "weight_file: " << weight_file;
+  AWARN << "model_root: " << model_root;
 
   if (gpu_id >= 0) {
     caffe::Caffe::SetDevice(gpu_id);

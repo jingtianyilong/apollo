@@ -117,6 +117,8 @@ DECLARE_string(cc_lane_post_processor_config_file);
 DECLARE_string(probabilistic_fusion_config_file);
 DECLARE_string(yolo_config_filename);
 DECLARE_string(yolo_camera_detector_config);
+DECLARE_string(yolov4_config_filename);
+DECLARE_string(yolov4_camera_detector_config);
 DECLARE_bool(use_whole_lane_line);
 DECLARE_string(modest_radar_detector_config);
 DECLARE_string(tracker_config);

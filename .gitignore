@@ -79,7 +79,7 @@ modules/data/conf/task_info_template.pb.txt
 modules/tools/ota/update.ini
 modules/tools/ota/vehicle_info.pb.txt
 modules/perception/model/yolo_camera_detector/
-
+modules/perception/model/yolov4_camera_detector/
 # Doxygen
 docs/doxygen
 

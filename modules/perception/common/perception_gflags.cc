@@ -158,9 +158,9 @@ DEFINE_string(
     "Yolo camera detector config filename.");
 DEFINE_string(yolov4_config_filename, "config.pt", "Yolov4 config filename.");
 DEFINE_string(
-    yolo_camera_detector_config,
+    yolov4_camera_detector_config,
     "modules/perception/model/camera/yolov4_camera_detector_config.pb.txt",
-    "Yolo camera detector config filename.");
+    "YoloV4 camera detector config filename.");
 DEFINE_bool(use_whole_lane_line, false,
             "Use whole lane line model or not");
 DEFINE_string(modest_radar_detector_config,

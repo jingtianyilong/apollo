@@ -118,6 +118,7 @@ cc_library(
         "//modules/perception/lib/config_manager",
         "//modules/perception/obstacle/camera/converter",
         "//modules/perception/obstacle/camera/detector/yolo_camera_detector",
+        "//modules/perception/obstacle/camera/detector/yolov4_camera_detector",
         "//modules/perception/obstacle/camera/dummy",
         "//modules/perception/obstacle/camera/filter",
         "//modules/perception/obstacle/camera/tracker",

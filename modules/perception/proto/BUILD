@@ -70,6 +70,21 @@ cc_proto_library(
     ],
 )
 
+cc_proto_library(
+    name = "yolov4_camera_detector_config_lib_proto",
+    deps = [
+        ":yolov4_camera_detector_config_lib",
+    ],
+)
+
+proto_library(
+    name = "yolov4_camera_detector_config_lib",
+    srcs = [
+        "yolov4_camera_detector_config.proto",
+    ],
+)
+
+
 proto_library(
     name = "modest_radar_detector_config_lib",
     srcs = [

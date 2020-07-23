@@ -14,7 +14,7 @@
  * limitations under the License.
  *****************************************************************************/
 
-#include "modules/perception/obstacle/camera/detector/yolo_camera_detector/util.h"
+#include "modules/perception/obstacle/camera/detector/yolov4_camera_detector/util.h"
 
 #include <fstream>
 #include <iostream>

@@ -66,6 +66,7 @@ std::vector<bbox_t> Detector::detect(std::string image_path,float thresh){
     std::vector<bbox_t> bbox_vec;
     for (int i = 0; i < nboxes; ++i) {
         box b = dets[i].bbox;
+        float const objectness = dets[i].objectness
         int const obj_id = max_index(dets[i].prob, m_classes);
         float const prob = dets[i].prob[obj_id];
 
@@ -78,7 +79,7 @@ std::vector<bbox_t> Detector::detect(std::string image_path,float thresh){
             bbox.h = b.h*im.h;
             bbox.obj_id = obj_id;
             bbox.prob = prob;
-
+            bbox.objectness = objectness
             bbox_vec.push_back(bbox);
         }
     }

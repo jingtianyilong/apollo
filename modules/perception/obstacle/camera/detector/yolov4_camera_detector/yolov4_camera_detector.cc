@@ -68,7 +68,7 @@ bool YoloV4CameraDetector::Init() {
 }
 
 bool YoloV4CameraDetector::Multitask(
-    const cv::Mat &frame, float thresh, std::vector<std::shared_ptr<bbox_t>> *objects) {
+    const cv::Mat &frame, float thresh, std::vector<std::shared_ptr<VisualObject>> *objects) {
   if (objects == nullptr) {
     AERROR << "'objects' is a null pointer.";
     return false;
@@ -77,7 +77,7 @@ bool YoloV4CameraDetector::Multitask(
   return true;
 }
 
-bool YoloV4CameraDetector::Detect(const cv::Mat &mat, float thresh, std::vector<std::shared_ptr<bbox_t>> *objects){
+bool YoloV4CameraDetector::Detect(const cv::Mat &mat, float thresh, std::vector<std::shared_ptr<VisualObject>> *objects){
     //convert mat to image
     if(mat.data == NULL)
         throw std::runtime_error("Mat is empty");
@@ -111,14 +111,21 @@ bool YoloV4CameraDetector::Detect(const cv::Mat &mat, float thresh, std::vector<
 
         if (prob > thresh)
         {
-            std::shared_ptr<bbox_t> bbox(new bbox_t);
-            bbox->x = std::max((double)0, (b.x - b.w / 2.)*im.w);
-            bbox->y = std::max((double)0, (b.y - b.h / 2.)*im.h);
-            bbox->w = b.w*im.w;
-            bbox->h = b.h*im.h;
-            bbox->obj_id = obj_id;
-            bbox->prob = prob;
-
+            std::shared_ptr<VisualObject> bbox(new VisualObject);
+            bbox->id = i;
+            bbox->score = dets[i].objectness;
+            float x = std::max((double)0, (b.x - b.w / 2.)*im.w);
+            float y = std::max((double)0, (b.y - b.h / 2.)*im.h);
+            float w = b.w*im.w;
+            float h = b.h*im.h;
+            bbox->upper_left = Eigen::Vector2f(x-0.5*w,y+0.5*h);
+            bbox->lower_right = Eigen::Vector2f(x-0.5*w,y+0.5*h);
+            bbox->height = 1.5;
+            bbox->width = 1.6;
+            bbox->length = 3.877;
+            bbox->type = static_cast<ObjectType>(obj_id);
+            std::vector<float> temp_probs(dets[i].prob, dets[i].prob+80);
+            bbox->type_probs = temp_probs;
             objects->push_back(bbox);
         }
     }

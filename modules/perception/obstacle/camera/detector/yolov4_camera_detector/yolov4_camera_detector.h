@@ -22,19 +22,13 @@
 #include <string>
 #include <vector>
 
-#include <caffe/caffe.hpp>
-#include "modules/perception/obstacle/camera/detector/yolov4_camera_detector/image_opencv.h"
+#include <yolo_caffe/yolo_caffe.hpp>
+#include "modules/perception/obstacle/camera/common/visual_object.h"
 #include "modules/perception/obstacle/camera/interface/base_camera_detector.h"
-#include "modules/perception/obstacle/camera/detector/yolov4_camera_detector/yolo_layer.h"
-
+#include "image_opencv.h"
+#include "yolo_layer.h"
 namespace apollo {
 namespace perception {
-
-// struct bbox_t{
-//     unsigned int x,y,w,h;   //(x,y) - top-left corner, (w,h) - width & height of bounded box
-//     float prob;             // confidence - probability that the object was found correctly
-//     unsigned int obj_id;    // class of object - from range [0,classes - 1]
-// };
 
 class YoloV4CameraDetector : public BaseCameraDetector {
  public:
@@ -43,8 +37,9 @@ class YoloV4CameraDetector : public BaseCameraDetector {
   virtual ~YoloV4CameraDetector() {}
 
   bool Init();
-  bool Init(const CameraDetectorInitOptions &options =
-                CameraDetectorInitOptions()) override {return false;};
+  bool Init(const CameraDetectorInitOptions &options) override {return false;};
+  // bool Init(const CameraDetectorInitOptions &options =
+  //               CameraDetectorInitOptions()) override {return false;};
 
   bool Detect(const cv::Mat &frame, const CameraDetectorOptions &options,
               std::vector<std::shared_ptr<VisualObject>> *objects) override {return false;};
@@ -52,7 +47,12 @@ class YoloV4CameraDetector : public BaseCameraDetector {
   bool Detect(const cv::Mat &mat, float thresh, std::vector<std::shared_ptr<VisualObject>> *objects);
 
   bool Multitask(const cv::Mat &frame, float thresh, std::vector<std::shared_ptr<VisualObject>> *objects);
-
+  bool Multitask(const cv::Mat& frame,
+                         const CameraDetectorOptions& options,
+                         std::vector<std::shared_ptr<VisualObject>>* objects,
+                         cv::Mat* mask) {
+    return true;
+  }
   bool Lanetask(const cv::Mat &frame, cv::Mat *mask) override {return false;};
 
   bool Extract(std::vector<std::shared_ptr<VisualObject>> *objects) {return false;}
@@ -60,9 +60,9 @@ class YoloV4CameraDetector : public BaseCameraDetector {
   std::string Name() const override;
 
  protected:
-  shared_ptr<Net<float> > m_net;
-  Blob<float> * m_net_input_data_blobs;
-  vector<Blob<float>*> m_blobs;
+  shared_ptr<yolo_caffe::Net<float> > m_net;
+  yolo_caffe::Blob<float> * m_net_input_data_blobs;
+  std::vector<Blob<float>*> m_blobs;
 
   float m_thresh = 0.001;
   int m_classes = 80; //coco classes

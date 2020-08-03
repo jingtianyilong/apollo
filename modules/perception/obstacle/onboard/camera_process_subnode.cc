@@ -60,14 +60,17 @@ bool CameraProcessSubnode::InitCalibration() {
 }
 
 bool CameraProcessSubnode::InitModules() {
-  RegisterFactoryYoloCameraDetector();
+  RegisterFactoryYoloV4CameraDetector();
   RegisterFactoryGeometryCameraConverter();
   RegisterFactoryCascadedCameraTracker();
   RegisterFactoryFlatCameraTransformer();
   RegisterFactoryObjectCameraFilter();
 
+  // detector_.reset(
+  //     BaseCameraDetectorRegisterer::GetInstanceByName("YoloV4CameraDetector"));
   detector_.reset(
-      BaseCameraDetectorRegisterer::GetInstanceByName("YoloCameraDetector"));
+      new YoloV4CameraDetector);
+      // BaseCameraDetectorRegisterer::GetInstanceByName("YoloCameraDetector"));
   detector_->Init();
 
   converter_.reset(BaseCameraConverterRegisterer::GetInstanceByName(
@@ -122,15 +125,17 @@ void CameraProcessSubnode::ImgCallback(const sensor_msgs::Image &message) {
   std::vector<std::shared_ptr<VisualObject>> objects;
   cv::Mat mask;
   PERF_BLOCK_END("CameraProcessSubnode_Image_Preprocess");
-  detector_->Multitask(img, CameraDetectorOptions(), &objects, &mask);
+  // detector_->Multitask(img, CameraDetectorOptions(), &objects, &mask);
+  detector_->Multitask(img, 0.45f, &objects);
+
   AWARN << "MASK SIZE: " << mask.size();
   mask = mask*2;
-  if (FLAGS_use_whole_lane_line) {
-    cv::Mat mask1;
-    detector_->Lanetask(img, &mask1);
-    mask += mask1;
-  }
-  AWARN << "MASK SIZE: " << mask.size();
+  // if (FLAGS_use_whole_lane_line) {
+  //   cv::Mat mask1;
+  //   detector_->Lanetask(img, &mask1);
+  //   mask += mask1;
+  // }
+  // AWARN << "MASK SIZE: " << mask.size();
   PERF_BLOCK_END("CameraProcessSubnode_detector_");
 
   converter_->Convert(&objects);
@@ -158,12 +163,12 @@ void CameraProcessSubnode::ImgCallback(const sensor_msgs::Image &message) {
 
   SharedDataPtr<CameraItem> camera_item_ptr(new CameraItem);
   camera_item_ptr->image_src_mat = img.clone();
-  mask.copyTo(out_objs->camera_frame_supplement->lane_map);
+  // mask.copyTo(out_objs->camera_frame_supplement->lane_map);
   PublishDataAndEvent(timestamp, out_objs, camera_item_ptr);
   PERF_BLOCK_END("CameraProcessSubnode publish in DAG");
 
   if (pb_obj_) PublishPerceptionPbObj(out_objs);
-  if (pb_ln_msk_) PublishPerceptionPbLnMsk(mask, message);
+  // if (pb_ln_msk_) PublishPerceptionPbLnMsk(mask, message);
 }
 
 void CameraProcessSubnode::ChassisCallback(
@@ -251,6 +256,7 @@ void CameraProcessSubnode::VisualObjToSensorObj(
     obj->width = vobj->width;
     obj->height = vobj->height;
     obj->type = vobj->type;
+    AWARN << "Found " << (int)obj->type << std::endl;
     obj->track_id = vobj->track_id;
     obj->tracking_time = vobj->track_age;
     obj->latest_tracked_time = vobj->last_track_timestamp;
@@ -266,6 +272,7 @@ void CameraProcessSubnode::VisualObjToSensorObj(
 
     ((*sensor_objects)->objects).emplace_back(obj);
   }
+
 }
 
 void CameraProcessSubnode::PublishDataAndEvent(

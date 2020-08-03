@@ -1,5 +1,5 @@
 
-#include "modules/perception/obstacle/camera/detector/yolov4_camera_detector/image.h"
+#include "image.h"
 
 #include <opencv2/opencv.hpp>
 
@@ -165,20 +165,20 @@ void fill_image(image m, float s)
     for(i = 0; i < m.h*m.w*m.c; ++i) m.data[i] = s;
 }
 
-static float get_pixel(image m, int x, int y, int c)
+ float get_pixel(image m, int x, int y, int c)
 {
     assert(x < m.w && y < m.h && c < m.c);
     return m.data[c*m.h*m.w + y*m.w + x];
 }
 
-static void set_pixel(image m, int x, int y, int c, float val)
+ void set_pixel(image m, int x, int y, int c, float val)
 {
     if (x < 0 || y < 0 || c < 0 || x >= m.w || y >= m.h || c >= m.c) return;
     assert(x < m.w && y < m.h && c < m.c);
     m.data[c*m.h*m.w + y*m.w + x] = val;
 }
 
-static void add_pixel(image m, int x, int y, int c, float val)
+ void add_pixel(image m, int x, int y, int c, float val)
 {
     assert(x < m.w && y < m.h && c < m.c);
     m.data[c*m.h*m.w + y*m.w + x] += val;

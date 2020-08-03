@@ -3,7 +3,7 @@
  * Author: 	Chen
  * Date:	2020/04/26	
  */
- #include "modules/perception/obstacle/camera/detector/yolov4_camera_detector/image_opencv.h"
+ #include "image_opencv.h"
 image mat_to_image(cv::Mat mat)
 {
     int w = mat.cols;

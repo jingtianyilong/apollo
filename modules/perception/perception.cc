@@ -36,8 +36,8 @@
 #include "modules/perception/obstacle/onboard/radar_process_subnode.h"
 #include "modules/perception/obstacle/onboard/visualization_subnode.h"
 #include "modules/perception/obstacle/onboard/ultrasonic_obstacle_subnode.h"
-#include "modules/perception/traffic_light/onboard/tl_preprocessor_subnode.h"
-#include "modules/perception/traffic_light/onboard/tl_proc_subnode.h"
+// #include "modules/perception/traffic_light/onboard/tl_preprocessor_subnode.h"
+// #include "modules/perception/traffic_light/onboard/tl_proc_subnode.h"
 
 namespace apollo {
 namespace perception {
@@ -61,7 +61,7 @@ Status Perception::Init() {
     return Status(ErrorCode::PERCEPTION_ERROR, "failed to Init DAGStreaming.");
   }
   callback_thread_num_ = 5;
-
+  AINFO << "INIT OK!";
   return Status::OK();
 }
 
@@ -74,9 +74,10 @@ void Perception::RegistAllOnboardClass() {
   RegisterFactoryCIPVObjectData();
   RegisterFactoryLaneSharedData();
   RegisterFactoryFusionSharedData();
-  traffic_light::RegisterFactoryTLPreprocessingData();
-
+  // traffic_light::RegisterFactoryTLPreprocessingData();
+  AINFO << "REG OBJ OK!";
   /// register subnode
+
   RegisterFactoryLidar64ProcessSubnode();
   RegisterFactoryLidar16ProcessSubnode();
   RegisterFactoryRadarProcessSubnode();
@@ -88,8 +89,10 @@ void Perception::RegistAllOnboardClass() {
   RegisterFactoryMotionService();
   RegisterFactoryUltrasonicObstacleSubnode();
   lowcostvisualizer::RegisterFactoryVisualizationSubnode();
-  traffic_light::RegisterFactoryTLPreprocessorSubnode();
-  traffic_light::RegisterFactoryTLProcSubnode();
+  // traffic_light::RegisterFactoryTLPreprocessorSubnode();
+  // traffic_light::RegisterFactoryTLProcSubnode();
+  AINFO << "REG NODE OK!";
+
 }
 
 Status Perception::Start() {

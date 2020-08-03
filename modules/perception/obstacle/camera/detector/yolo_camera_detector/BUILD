@@ -56,6 +56,7 @@ cc_test(
         "//modules/common/util",
         "//modules/perception/cuda_util",
         "@gtest//:main",
+        "@caffe//:lib"
     ],
 )
 

@@ -7,8 +7,8 @@
 
 #include <assert.h>
 
-#include "modules/perception/obstacle/camera/detector/yolov4_camera_detector/cuda.h"
-#include "modules/perception/obstacle/camera/detector/yolov4_camera_detector/blas.h"
+#include "cuda.h"
+#include "blas.h"
 
 __global__ void copy_kernel(int N,float* X,int OFFX,int INCX,float* Y,int OFFY,int INCY)
 {

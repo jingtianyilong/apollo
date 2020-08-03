@@ -3,8 +3,8 @@
  * Author: 	Chen
  * Date:	2018/06/07
  */
-#ifndef __IMAGE_H_
-#define __IMAGE_H_
+#ifndef __IMAGE_YOLOV4_H_
+#define __IMAGE_YOLOV4_H_
 
 typedef struct
 {
@@ -25,10 +25,10 @@ void free_image(image m);
 
 image letterbox_image(image im, int w, int h);
 
-static float get_pixel(image m, int x, int y, int c);
+ float get_pixel(image m, int x, int y, int c);
 
-static void set_pixel(image m, int x, int y, int c, float val);
+ void set_pixel(image m, int x, int y, int c, float val);
 
-static void add_pixel(image m, int x, int y, int c, float val);
+ void add_pixel(image m, int x, int y, int c, float val);
 
 #endif

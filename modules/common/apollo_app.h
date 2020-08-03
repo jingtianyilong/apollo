@@ -119,6 +119,7 @@ void apollo_app_sigint_handler(int signal_num);
     google::ParseCommandLineFlags(&argc, &argv, true);         \
     signal(SIGINT, apollo::common::apollo_app_sigint_handler); \
     APP apollo_app_;                                           \
+    AINFO << apollo_app_.Name() << "RUN";                      \
     ros::init(argc, argv, apollo_app_.Name());                 \
     apollo_app_.Spin();                                        \
     return 0;                                                  \

@@ -14,12 +14,13 @@
  * limitations under the License.
  *****************************************************************************/
 
-#include "modules/perception/obstacle/camera/detector/yolov4_camera_detector/yolov4_camera_detector.h"
-#include "modules/perception/obstacle/camera/detector/yolov4_camera_detector/cuda.h"
+// #include "/apollo/modules/perception/obstacle/camera/detector/yolov4_camera_detector/yolov4_camera_detector.h"
+// #include "/apollo/modules/perception/obstacle/camera/detector/yolov4_camera_detector/cuda.h"
+#include "yolov4_camera_detector.h"
+#include "cuda.h"
 
 
-
-#include <caffe/caffe.hpp>
+#include <yolo_caffe/yolo_caffe.hpp>
 #include <vector>
 #include <iostream>
 #include "modules/perception/common/perception_gflags.h"
@@ -50,10 +51,10 @@ bool YoloV4CameraDetector::Init() {
   const string prototxt = "/apollo/caffe-yolov4/prototxt/yolov4.prototxt";
   const string caffemodel = "/apollo/caffe-yolov4/yolov4.caffemodel";
 
-  Caffe::set_mode(Caffe::GPU);
+  YoloCaffe::set_mode(YoloCaffe::GPU);
 
   /* load and init network. */
-  m_net.reset(new Net<float>(prototxt, TEST));
+  m_net.reset(new yolo_caffe::Net<float>(prototxt, TEST));
   m_net->CopyTrainedLayersFrom(caffemodel);
   AINFO << "net inputs numbers is " << m_net->num_inputs();
   AINFO << "net outputs numbers is " << m_net->num_outputs();

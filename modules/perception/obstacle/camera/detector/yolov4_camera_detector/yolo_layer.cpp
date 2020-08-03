@@ -4,11 +4,11 @@
  * Date:	2018/06/04
  */
 
-#include "modules/perception/obstacle/camera/detector/yolov4_camera_detector/yolo_layer.h"
-#include "modules/perception/obstacle/camera/detector/yolov4_camera_detector/blas.h"
-#include "modules/perception/obstacle/camera/detector/yolov4_camera_detector/cuda.h"
-#include "modules/perception/obstacle/camera/detector/yolov4_camera_detector/activations.h"
-#include "modules/perception/obstacle/camera/detector/yolov4_camera_detector/box.h"
+#include "yolo_layer.h"
+#include "blas.h"
+#include "cuda.h"
+#include "activations.h"
+#include "box.h"
 #include <stdio.h>
 #include <math.h>
 

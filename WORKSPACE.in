@@ -129,7 +129,12 @@ new_local_repository(
     build_file = "third_party/caffe.BUILD",
     path = "/usr/include/caffe",
 )
-
+# YoloCaffe
+new_local_repository(
+    name = "yolo_caffe",
+    build_file = "third_party/yolo_caffe.BUILD",
+    path = "/usr/include/yolo_caffe",
+)
 # YAML-CPP
 new_http_archive(
     name = "yaml_cpp",

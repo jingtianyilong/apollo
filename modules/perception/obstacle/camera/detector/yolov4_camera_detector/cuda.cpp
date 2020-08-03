@@ -3,8 +3,8 @@
  * Author: 	Chen
  * Date:	2018/06/04
  */
-#include "modules/perception/obstacle/camera/detector/yolov4_camera_detector/cuda.h"
-#include "modules/perception/obstacle/camera/detector/yolov4_camera_detector/blas.h"
+#include "cuda.h"
+#include "blas.h"
 
 #include <assert.h>
 #include <stdlib.h>

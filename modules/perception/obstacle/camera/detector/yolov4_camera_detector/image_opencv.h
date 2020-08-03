@@ -4,11 +4,11 @@
  * Date:	2020/04/26	
  */
 
- #ifndef __IMAGE_OPENCV_H_
-#define __IMAGE_OPENCV_H_
+#ifndef __IMAGE_OPENCV_YOLOV4_H_
+#define __IMAGE_OPENCV_YOLOV4_H_
 
 #include <opencv2/opencv.hpp>
-#include "modules/perception/obstacle/camera/detector/yolov4_camera_detector/image.h"
+#include "image.h"
 
 image mat_to_image(cv::Mat mat);
 

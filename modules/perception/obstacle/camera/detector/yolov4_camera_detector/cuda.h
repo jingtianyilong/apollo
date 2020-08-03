@@ -4,8 +4,8 @@
  * Date:	2018/06/04
  */
 
-#ifndef __CUDA_H_
-#define __CUDA_H_
+#ifndef __CUDA_YOLOV4_H_
+#define __CUDA_YOLOV4_H_
 #include "cuda_runtime.h"
 #include "curand.h"
 #include "cublas_v2.h"

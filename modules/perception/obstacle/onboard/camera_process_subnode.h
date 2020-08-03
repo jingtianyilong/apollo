@@ -29,7 +29,7 @@
 #include "sensor_msgs/Image.h"
 #include "sensor_msgs/fill_image.h"
 #include "yaml-cpp/yaml.h"
-
+#include "modules/perception/obstacle/camera/interface/base_camera_detector.h"
 #include "modules/canbus/proto/chassis.pb.h"
 #include "modules/common/adapters/adapter_manager.h"
 #include "modules/common/log.h"
@@ -42,11 +42,10 @@
 #include "modules/perception/obstacle/base/object.h"
 #include "modules/perception/obstacle/base/types.h"
 #include "modules/perception/obstacle/camera/converter/geometry_camera_converter.h"
-#include "modules/perception/obstacle/camera/detector/yolo_camera_detector/yolo_camera_detector.h"
+#include "modules/perception/obstacle/camera/detector/yolov4_camera_detector/yolov4_camera_detector.h"
 #include "modules/perception/obstacle/camera/dummy/dummy_algorithms.h"
 #include "modules/perception/obstacle/camera/filter/object_camera_filter.h"
 #include "modules/perception/obstacle/camera/interface/base_camera_converter.h"
-#include "modules/perception/obstacle/camera/interface/base_camera_detector.h"
 #include "modules/perception/obstacle/camera/interface/base_camera_filter.h"
 #include "modules/perception/obstacle/camera/interface/base_camera_tracker.h"
 #include "modules/perception/obstacle/camera/interface/base_camera_transformer.h"
@@ -122,7 +121,7 @@ class CameraProcessSubnode : public Subnode {
   const float ln_msk_threshold_ = 0.95f;
 
   // Modules
-  std::unique_ptr<BaseCameraDetector> detector_;
+  std::unique_ptr<YoloV4CameraDetector> detector_;
   std::unique_ptr<BaseCameraConverter> converter_;
   std::unique_ptr<BaseCameraTracker> tracker_;
   std::unique_ptr<BaseCameraTransformer> transformer_;

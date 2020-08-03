@@ -1,4 +1,4 @@
-#include "modules/perception/obstacle/camera/detector/yolov4_camera_detector/box.h"
+#include "box.h"
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>

@@ -4,8 +4,8 @@
  * Date:	2018/06/04
  */
 
-#ifndef __BLAS_H_
-#define __BLAS_H_
+#ifndef __BLAS_YOLOV4_H_
+#define __BLAS_YOLOV4_H_
 
 void copy_gpu(int N,float* X,int INCX,float* Y,int INCY);
 

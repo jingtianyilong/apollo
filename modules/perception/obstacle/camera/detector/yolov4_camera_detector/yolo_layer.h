@@ -6,11 +6,11 @@
 
 #ifndef __YOLO_LAYER_H_
 #define __YOLO_LAYER_H_
-#include <caffe/caffe.hpp>
+#include <yolo_caffe/yolo_caffe.hpp>
 #include <string>
 #include <vector>
 
-using namespace caffe;
+using namespace yolo_caffe;
 
 
 // const int classes = 80;

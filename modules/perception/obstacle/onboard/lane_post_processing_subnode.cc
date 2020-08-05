@@ -200,10 +200,12 @@ Status LanePostProcessingSubnode::ProcEvents() {
   Timer timer;
   timer.Start();
 
-  cv::Mat lane_map = objs->camera_frame_supplement->lane_map;
+  // cv::Mat lane_map = objs->camera_frame_supplement->lane_map;
+  cv::Mat lane_map = cv::Mat::zeros(384,960,CV_32FC1);
+
   if (lane_map.empty()) {
     AERROR << "Get NULL lane_map from camera frame supplement";
-    return Status(ErrorCode::PERCEPTION_ERROR, "Failed to proc events.");
+    // return Status(ErrorCode::PERCEPTION_ERROR, "Failed to proc events.");
   }
 
   LaneObjectsPtr lane_objects(new LaneObjects());

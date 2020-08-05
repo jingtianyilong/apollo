@@ -45,7 +45,7 @@ bool VisualizationSubnode::InitInternal() {
     AERROR << "Failed to init stream.";
     return false;
   }
-
+  AWARN << "Init stream.";
   // init camera object data
   if (camera_event_id_ != -1 || fusion_event_id_ != -1) {
     camera_object_data_ = dynamic_cast<CameraObjectData*>(
@@ -54,7 +54,7 @@ bool VisualizationSubnode::InitInternal() {
       AERROR << "Failed to get CameraObjectData.";
       return false;
     }
-    AINFO << "Init shared datas successfully, data: "
+    AWARN << "Init shared datas successfully, data: "
           << camera_object_data_->name();
 
     camera_shared_data_ = dynamic_cast<CameraSharedData*>(
@@ -133,6 +133,7 @@ bool VisualizationSubnode::InitInternal() {
     AERROR << "Failed to get instance: " << FLAGS_frame_visualizer;
     return false;
   }
+  AWARN << "Got instance: " << FLAGS_frame_visualizer;
   content_.set_pose_type(FrameContent::IMAGE_CONTINUOUS);
   AINFO << "visualize according to continuous image: ";
 

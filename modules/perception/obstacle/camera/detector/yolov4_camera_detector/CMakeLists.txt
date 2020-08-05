@@ -73,7 +73,7 @@ target_link_libraries(yolov4-plugin
 		/usr/lib/libprotobuf.so
 		/apollo/caffe/.build_release/lib/libyolo_caffe.so  
 		# /home/caros/secure_upgrade/depend_lib/libgflags.so
-		/home/zijie/.cache/bazel/_bazel_zijie/540135163923dd7d5820f3ee4b306b32/execroot/apollo/bazel-out/local-dbg/bin/external/com_github_gflags_gflags/libgflags.so  
+		/home/zijie/.cache/bazel/_bazel_zijie/540135163923dd7d5820f3ee4b306b32/execroot/apollo/bazel-out/local-dbg/bin/external/com_github_gflags_gflags/libgflags.so
 		/usr/local/lib/libglog.so
 		/usr/lib/x86_64-linux-gnu/libboost_system.so  
 		/usr/lib/libGLEW.so  

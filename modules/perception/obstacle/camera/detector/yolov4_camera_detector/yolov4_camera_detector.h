@@ -51,9 +51,13 @@ class YoloV4CameraDetector : public BaseCameraDetector {
                          const CameraDetectorOptions& options,
                          std::vector<std::shared_ptr<VisualObject>>* objects,
                          cv::Mat* mask) {
+    *mask = cv::Mat(384, 960, CV_32FC1);
     return true;
   }
-  bool Lanetask(const cv::Mat &frame, cv::Mat *mask) override {return false;};
+  bool Lanetask(const cv::Mat &frame, cv::Mat *mask) override {
+    *mask = cv::Mat(384, 960, CV_32FC1);
+    return true;
+    }
 
   bool Extract(std::vector<std::shared_ptr<VisualObject>> *objects) {return false;}
 

@@ -76,13 +76,13 @@ struct alignas(16) VisualObject {
   float height = 0.0f;
 
   // [radian] observation angle of object, ranging as [-pi, pi]
-  float alpha = 0.0f;
+  float alpha = 1.5707963f;
 
   // [radian] Rotation around the vertical axis, ranging as [-pi, pi]
   // the yaw angle, theta = 0.0f means direction = (1, 0, 0)
   float theta = 0.0f;
   // main direction
-  Eigen::Vector3f direction = Eigen::Vector3f(1.0f, 0.0f, 0.0f);
+  Eigen::Vector3f direction = Eigen::Vector3f(1.5707963f, 0.0f, 0.0f);
 
   // [meter] center of the object
   Eigen::Vector3f center = Eigen::Vector3f::Zero();

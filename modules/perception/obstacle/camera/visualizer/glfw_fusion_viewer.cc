@@ -1260,7 +1260,9 @@ bool GLFWFusionViewer::draw_lane_objects_image(cv::Mat* image_mat) {
 
   CameraFrameSupplementPtr camera_frame_supplement =
       frame_content_->get_camera_frame_supplement();
-  const cv::Mat& lane_map = camera_frame_supplement->lane_map;
+  // const cv::Mat& lane_map = camera_frame_supplement->lane_map;
+  const cv::Mat& lane_map = cv::Mat::zeros(384,960,CV_32FC1);
+
   if (lane_map.empty()) {
     AERROR << "Get nullptr lane_map from camera frame supplement.";
     return false;

@@ -123,19 +123,19 @@ void CameraProcessSubnode::ImgCallback(const sensor_msgs::Image &message) {
   }
   cv::resize(img, img, cv::Size(1920, 1080), 0, 0);
   std::vector<std::shared_ptr<VisualObject>> objects;
-  cv::Mat mask;
+  cv::Mat mask = cv::Mat::zeros(384,960,CV_32FC1);
   PERF_BLOCK_END("CameraProcessSubnode_Image_Preprocess");
   // detector_->Multitask(img, CameraDetectorOptions(), &objects, &mask);
-  detector_->Multitask(img, 0.45f, &objects);
+  detector_->Multitask(img, 0.2f, &objects);
 
   AWARN << "MASK SIZE: " << mask.size();
   mask = mask*2;
-  // if (FLAGS_use_whole_lane_line) {
-  //   cv::Mat mask1;
-  //   detector_->Lanetask(img, &mask1);
-  //   mask += mask1;
-  // }
-  // AWARN << "MASK SIZE: " << mask.size();
+  if (FLAGS_use_whole_lane_line) {
+    cv::Mat mask1;
+    detector_->Lanetask(img, &mask1);
+    mask += mask1;
+  }
+  AWARN << "MASK SIZE: " << mask.size();
   PERF_BLOCK_END("CameraProcessSubnode_detector_");
 
   converter_->Convert(&objects);
@@ -246,7 +246,7 @@ void CameraProcessSubnode::VisualObjToSensorObj(
   for (size_t i = 0; i < objects.size(); ++i) {
     std::shared_ptr<VisualObject> vobj = objects[i];
     std::shared_ptr<Object> obj(new Object());
-
+    AWARN << "FIND 1 OBJ" << std::endl;
     obj->id = vobj->id;
     obj->score = vobj->score;
     obj->direction = vobj->direction.cast<double>();
@@ -318,7 +318,7 @@ void CameraProcessSubnode::PublishPerceptionPbObj(
   }
 
   AdapterManager::PublishPerceptionObstacles(obstacles);
-  ADEBUG << "PublishPerceptionObstacles: " << obstacles.ShortDebugString();
+  AWARN << "PublishPerceptionObstacles: " << obstacles.ShortDebugString();
 }
 
 void CameraProcessSubnode::PublishPerceptionPbLnMsk(
